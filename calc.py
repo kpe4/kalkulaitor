@@ -19,6 +19,12 @@ def press_enter(event):
     click('=')
     return "break"
 
+def validate_input(action, value_if_allowed):
+    if action == '1':
+        allowed_chars = "0123456789+-*/."
+        return all(char in allowed_chars for char in value_if_allowed)
+    return True
+
 root = tk.Tk()
 root.title("🌑Калькулятор🌑")
 root.geometry("340x360")
@@ -28,7 +34,17 @@ root.minsize(340, 360)
 root.bind('<Return>', press_enter)
 root.bind('<KP_Enter>', press_enter)
 
-entry = tk.Entry(root, font=("Arial", 20), justify="right")
+vcmd = (root.register(validate_input), '%d', '%P')
+
+entry = tk.Entry(
+    root,
+    font=("Arial", 20),
+    justify="right",
+    validate="key",
+    validatecommand=vcmd
+)
+entry.grid(row=0, column=0, columnspan=4, sticky="nsew", padx=10, pady=10)
+
 entry.grid(row=0, column=0, columnspan=4, ipadx=8, ipady=10, padx=10, pady=10)
 
 buttons = [
